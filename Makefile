@@ -1,11 +1,17 @@
 install:
 	npm install
 
-genDiff:
-	node genDiff.js
+gendiff:
+	node src/bin/gendiff.js
 
 publish:
 	npm publish --dry-run
 
 lint:
 	npx eslint .
+
+test:
+	npm test
+
+test-coverage:
+	npm test -- --coverage
