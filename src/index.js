@@ -57,5 +57,5 @@ export default (path1, path2) => {
 
   const diffList = createDiffList(diffConfig).join('\n');
 
-  return `\n{\n${diffList}\n}`;
+  return `\n{\n${diffList}\n}\n`;
 };
