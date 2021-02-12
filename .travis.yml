@@ -4,16 +4,16 @@ node_js:
   - node
 
 env:
+  TEST_ID: ${{ secrets.TEST_REPORTER_ID }}
   global:
-      TEST_ID: ${{secrets.TEST_REPORTER_ID}}
-    - CC_TEST_REPORTER_ID=$TEST_ID
+    - CC_TEST_REPORTER_ID="$TEST_ID"
 
 before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
 
- script:
+script:
   - make lint
   - make test
 
