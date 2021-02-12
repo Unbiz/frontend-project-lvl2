@@ -1,4 +1,4 @@
-name: eslint-check
+name: tests
 
 on:
   push:
@@ -13,4 +13,4 @@ jobs:
         with:
           node-version: '14'
       - run: make install
-      - run: make lint
+      - run: make test
