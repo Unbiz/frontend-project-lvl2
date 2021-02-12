@@ -1,10 +1,20 @@
 import _ from 'lodash';
 import fs from 'fs';
 import path from 'path';
+import parser from './parsers.js';
 
 const readFile = (pathToFile) => fs.readFileSync(pathToFile, 'utf8');
 
-const toJson = (data) => JSON.parse(data);
+const getTypeOfFile = (fileName) => path.extname(fileName).substring(1);
+
+const getDiffConfig = (configsKeys, config1, config2) => {
+  const diffConfig = configsKeys.map((key) => {
+    const value1 = _.has(config1, key) ? config1[key] : null;
+    const value2 = _.has(config2, key) ? config2[key] : null;
+    return { key, value1, value2 };
+  });
+  return diffConfig;
+};
 
 const typeOfChange = (item) => {
   if (item.value1 === null) return 'added';
@@ -42,18 +52,16 @@ const createDiffList = (config) => {
 export default (path1, path2) => {
   const data1 = readFile(path.resolve(path1));
   const data2 = readFile(path.resolve(path2));
-  const config1 = toJson(data1);
-  const config2 = toJson(data2);
+  const type1 = getTypeOfFile(path1);
+  const type2 = getTypeOfFile(path2);
+  const config1 = parser(data1, type1);
+  const config2 = parser(data2, type2);
   const keys1 = Object.keys(config1);
   const keys2 = Object.keys(config2);
 
   const configsKeys = _.union(keys1, keys2).sort();
 
-  const diffConfig = configsKeys.map((key) => {
-    const value1 = _.has(config1, key) ? config1[key] : null;
-    const value2 = _.has(config2, key) ? config2[key] : null;
-    return { key, value1, value2 };
-  });
+  const diffConfig = getDiffConfig(configsKeys, config1, config2);
 
   const diffList = createDiffList(diffConfig).join('\n');
 
