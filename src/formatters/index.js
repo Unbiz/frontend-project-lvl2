@@ -5,9 +5,8 @@ const formatters = (outFormat) => {
     case 'stylish':
       return stylish;
     default:
-      break;
+      throw new Error('Bad value for outFormat');
   }
-  return;
 };
 
 export default formatters;
