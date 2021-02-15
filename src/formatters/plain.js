@@ -1,8 +1,9 @@
 import _ from 'lodash';
 
 const sheckValue = (value) => {
+  const sheckIsNumber = /^\d+$/;
   if (_.isObject(value)) return '[complex value]';
-  if (value === null || typeof value === 'boolean' || Number.isNaN(value)) return value;
+  if (value === null || typeof value === 'boolean' || sheckIsNumber.test(value)) return value;
   return `'${value}'`;
 };
 
