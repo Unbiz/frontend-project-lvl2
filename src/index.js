@@ -1,69 +1,22 @@
-import _ from 'lodash';
 import fs from 'fs';
 import path from 'path';
 import parser from './parsers.js';
+import getDiffConfig from './diff.js';
+import getFormatter from './formatters/index.js';
 
 const readFile = (pathToFile) => fs.readFileSync(pathToFile, 'utf8');
-
 const getTypeOfFile = (fileName) => path.extname(fileName).substring(1);
 
-const getDiffConfig = (configsKeys, config1, config2) => {
-  const diffConfig = configsKeys.map((key) => {
-    const value1 = _.has(config1, key) ? config1[key] : null;
-    const value2 = _.has(config2, key) ? config2[key] : null;
-    return { key, value1, value2 };
-  });
-  return diffConfig;
-};
-
-const typeOfChange = (item) => {
-  if (item.value1 === null) return 'added';
-  if (item.value2 === null) return 'deleted';
-  if (item.value2 === item.value1) return 'unchanged';
-
-  return 'changed';
-};
-
-const createDiffList = (config) => {
-  const list = config.reduce((acc, item) => {
-    const type = typeOfChange(item);
-    switch (type) {
-      case 'added':
-        acc.push(`  + ${item.key}: ${item.value2}`);
-        break;
-      case 'deleted':
-        acc.push(`  - ${item.key}: ${item.value1}`);
-        break;
-      case 'unchanged':
-        acc.push(`    ${item.key}: ${item.value2}`);
-        break;
-      case 'changed':
-        acc.push(`  - ${item.key}: ${item.value1}`);
-        acc.push(`  + ${item.key}: ${item.value2}`);
-        break;
-      default:
-        break;
-    }
-    return acc;
-  }, []);
-  return list;
-};
-
-export default (path1, path2) => {
+export default (path1, path2, format = 'stylish') => {
   const data1 = readFile(path.resolve(path1));
   const data2 = readFile(path.resolve(path2));
   const type1 = getTypeOfFile(path1);
   const type2 = getTypeOfFile(path2);
   const config1 = parser(data1, type1);
   const config2 = parser(data2, type2);
-  const keys1 = Object.keys(config1);
-  const keys2 = Object.keys(config2);
 
-  const configsKeys = _.union(keys1, keys2).sort();
-
-  const diffConfig = getDiffConfig(configsKeys, config1, config2);
-
-  const diffList = createDiffList(diffConfig).join('\n');
-
-  return `\n{\n${diffList}\n}\n`;
+  const diffConfig = getDiffConfig(config1, config2);
+  const formatter = getFormatter(format);
+  const diffList = formatter(diffConfig);
+  return diffList;
 };

@@ -9,16 +9,16 @@ const __dirname = dirname(__filename);
 const getFuxturePath = (fileName) => path.join(__dirname, '..', '__fixtures__', fileName);
 const readFile = (fileName) => fs.readFileSync(getFuxturePath(fileName), 'utf8');
 
-const beforeJson = getFuxturePath('flat/file1.json');
-const afterJson = getFuxturePath('flat/file2.json');
+const beforeJson = getFuxturePath('file1.json');
+const afterJson = getFuxturePath('file2.json');
 
-const beforeYaml = getFuxturePath('flat/file1.yml');
-const afterYaml = getFuxturePath('flat/file2.yml');
+const beforeYaml = getFuxturePath('file1.yml');
+const afterYaml = getFuxturePath('file2.yml');
 
-test('flat json', () => {
-  expect(genDiff(beforeJson, afterJson)).toBe(readFile('flat/jsonResult'));
+test('json', () => {
+  expect(genDiff(beforeJson, afterJson)).toBe(readFile('result'));
 });
 
-test('flat yaml', () => {
-  expect(genDiff(beforeYaml, afterYaml)).toBe(readFile('flat/jsonResult'));
+test('yaml', () => {
+  expect(genDiff(beforeYaml, afterYaml)).toBe(readFile('result'));
 });
