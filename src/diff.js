@@ -19,7 +19,7 @@ const getNodeType = (key, config1, config2) => {
 const getDiffConfig = (config1, config2) => {
   const keys1 = Object.keys(config1);
   const keys2 = Object.keys(config2);
-  const configsKeys = _.union(keys1, keys2).sort();
+  const configsKeys = _.sortBy(_.union(keys1, keys2));
 
   const getNodeByTypes = (key, nodeType, value1, value2) => {
     const fnByNode = {
