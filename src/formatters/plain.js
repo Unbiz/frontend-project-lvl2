@@ -1,6 +1,10 @@
 import _ from 'lodash';
 
-const sheckValue = (value) => (_.isObject(value) ? '[complex value]' : `'${value}'`);
+const sheckValue = (value) => {
+  if (_.isObject(value)) return '[complex value]';
+  if (value === null || typeof value === 'boolean' || Number.isNaN(value)) return value;
+  return `'${value}'`;
+};
 
 const getPropLine = (config, namePrefix = '') => {
   const plainList = config.map((prop) => {
