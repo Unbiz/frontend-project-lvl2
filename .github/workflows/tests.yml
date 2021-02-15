@@ -14,3 +14,20 @@ jobs:
           node-version: '14'
       - run: make install
       - run: make test
+  coverage:
+    needs: [ eslint ]
+    name: coverage
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-node@master
+      with:
+        node-version: '12'
+    - run: npm install -g yarn
+    - run: yarn install
+    - run: yarn build
+    - uses: paambaati/codeclimate-action@v2.5.7
+      env:
+        CC_TEST_REPORTER_ID: ${{ TEST_REPORTER_ID }}
+      with:
+        coverageCommand: yarn coverage
