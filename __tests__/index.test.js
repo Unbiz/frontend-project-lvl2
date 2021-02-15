@@ -26,3 +26,7 @@ test('yaml', () => {
 test('format - plain', () => {
   expect(genDiff(beforeJson, afterJson, 'plain')).toBe(readFile('result-plain'));
 });
+
+test('format - json', () => {
+  expect(genDiff(beforeJson, afterJson, 'json')).toBe(readFile('result-json'));
+});
