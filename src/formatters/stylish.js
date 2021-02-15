@@ -40,7 +40,7 @@ const createDiffList = (config) => {
 
   const diffList = createSubList(config, defPrefix).join('\n');
 
-  return `\n{\n${diffList}\n}\n`;
+  return `{\n${diffList}\n}`;
 };
 
 export default createDiffList;

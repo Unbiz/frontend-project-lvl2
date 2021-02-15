@@ -18,5 +18,5 @@ export default (path1, path2, format = 'stylish') => {
   const diffConfig = getDiffConfig(config1, config2);
   const formatter = getFormatter(format);
   const diffList = formatter(diffConfig);
-  return diffList;
+  return `${diffList}\n`;
 };

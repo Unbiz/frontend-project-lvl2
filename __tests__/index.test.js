@@ -16,9 +16,13 @@ const beforeYaml = getFuxturePath('file1.yml');
 const afterYaml = getFuxturePath('file2.yml');
 
 test('json', () => {
-  expect(genDiff(beforeJson, afterJson)).toBe(readFile('result'));
+  expect(genDiff(beforeJson, afterJson)).toBe(readFile('result-stylish'));
 });
 
 test('yaml', () => {
-  expect(genDiff(beforeYaml, afterYaml)).toBe(readFile('result'));
+  expect(genDiff(beforeYaml, afterYaml, 'stylish')).toBe(readFile('result-stylish'));
+});
+
+test('format - plain', () => {
+  expect(genDiff(beforeJson, afterJson, 'plain')).toBe(readFile('result-plain'));
 });
